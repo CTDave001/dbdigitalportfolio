@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>DB Digital — David Bogdanov | NFC Profile</title>
+  <meta name="description" content="DB Digital — custom web design & digital marketing. Tap to call, email, or preview recent work." />
+  <meta name="theme-color" content="#0B121A" />
+  <meta property="og:title" content="DB Digital — David Bogdanov" />
+  <meta property="og:description" content="Custom Web Design & Digital Marketing • Vancouver, WA" />
+  <meta property="og:type" content="website" />
+  <style>
+    /* MOBILE‑FIRST, ULTRA‑LIGHT, FAST */
+    :root{
+      --bg:#0B121A;           /* deep navy/black */
+      --card:#0F1726;         /* card surface */
+      --muted:#8AA0B6;        /* muted text */
+      --ink:#EAF2FF;          /* light ink */
+      --accent:#4DD0E1;       /* cyan accent */
+      --accent-2:#FF4DA6;     /* pink accent */
+      --radius:18px;
+      --shadow:0 10px 30px rgba(2,6,23,.5);
+      --ring:0 0 0 3px rgba(77,208,225,.28);
+      --safe: env(safe-area-inset-bottom);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; color:var(--ink);
+      background: radial-gradient(900px 500px at 15% -10%, rgba(77,208,225,.09), transparent 60%),
+                  radial-gradient(800px 480px at 100% 10%, rgba(255,77,166,.08), transparent 65%),
+                  linear-gradient(180deg,#0B121A 0%, #0A0F19 100%);
+      -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+    }
+    a{color:var(--accent);text-decoration:none}
+    a:focus-visible{outline:var(--ring)}
+
+    .wrap{max-width:980px;margin:0 auto;padding:16px}
+
+    /* HEADER — simplified, centered for mobile */
+    header{display:grid;gap:10px;justify-items:center;padding:14px;border-radius:var(--radius);
+      background:rgba(255,255,255,.02);box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.06);backdrop-filter:blur(6px)}
+    .logo{height:52px;width:auto;filter:drop-shadow(0 6px 16px rgba(77,208,225,.25))}
+    h1{margin:2px 0 0;font-size:22px;letter-spacing:.3px}
+    .tag{font-size:13px;color:var(--muted);}
+
+    /* ACTIONS — big tap targets */
+    .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;margin-top:6px}
+    .btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px 14px;border-radius:14px;border:1px solid rgba(255,255,255,.12);
+      background:linear-gradient(180deg, rgba(77,208,225,.18), rgba(77,208,225,.10));color:#EAFBFF;font-weight:700}
+    .btn.secondary{background:linear-gradient(180deg, rgba(255,77,166,.18), rgba(255,77,166,.10));border-color:rgba(255,77,166,.32)}
+
+    /* HERO */
+    .hero{display:grid;gap:12px;margin-top:14px}
+    .card{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .bio{padding:18px}
+    .bio h2{margin:0 0 6px;font-size:20px}
+    .bio p{margin:0;color:#DCE7F5;line-height:1.6}
+    .chips{margin-top:10px;display:flex;flex-wrap:wrap;gap:8px}
+    .chip{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);font-size:13px}
+
+    /* TILES — responsive, lazy and touch‑friendly */
+    .tiles{padding:12px}
+    .grid{display:grid;gap:10px;grid-template-columns:1fr}
+    .tile{position:relative;overflow:hidden;border-radius:16px;background:#0b1222;border:1px solid rgba(255,255,255,.08)}
+    .ar{width:100%;aspect-ratio:16/9;position:relative}
+    .tile video,.tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .label{position:absolute;left:10px;bottom:10px;font-weight:700;font-size:14px;padding:8px 10px;border-radius:12px;background:rgba(11,18,26,.7);border:1px solid rgba(255,255,255,.15);backdrop-filter:blur(4px)}
+    .tile:active{outline:3px solid rgba(77,208,225,.28)}
+
+    /* STICKY QUICK BAR */
+    .dock{position:fixed;left:0;right:0;bottom:0;transform:translateY(calc(var(--safe) * -1));padding:8px 12px calc(10px + var(--safe));
+      display:grid;grid-template-columns:repeat(3,1fr);gap:10px;background:linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.6) 35%);}
+    .dock .dock-btn{padding:12px 10px;border-radius:14px;text-align:center;font-weight:800;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff}
+
+    footer{opacity:.7;text-align:center;font-size:12px;padding:22px 8px 80px}
+
+    /* enhancements on wider screens */
+    @media (min-width:560px){
+      .actions{grid-template-columns:repeat(3,1fr)}
+      .grid{grid-template-columns:1fr 1fr}
+    }
+    @media (min-width:900px){
+      header{grid-template-columns:auto 1fr;justify-items:start}
+      .grid{grid-template-columns:repeat(3,1fr)}
+      .wrap{padding:24px}
+    }
+
+    /* accessibility & motion */
+    @media (prefers-reduced-motion:reduce){
+      *{scroll-behavior:auto}
+      .tile video{animation:none;transition:none}
+    }
+    @media (prefers-reduced-data:reduce){
+      .tile video{display:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="card">
+      <img class="logo" alt="DB Digital Logo" src="https://cdn.prod.website-files.com/67cb547c157b611e86c7da82/67cb55786b12aefcbc44515d_dbdigitalmarketinglogo.svg"/>
+      <h1>DB Digital</h1>
+      <div class="tag">Custom Web Design & Digital Marketing • Vancouver, WA</div>
+      <div class="actions">
+        <a class="btn" href="tel:+15648883736">Call</a>
+        <a class="btn secondary" href="mailto:david@dbdigitalco.com">Email</a>
+        <a class="btn" href="mailto:me@davidbogdanov.com">Alt Email</a>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="bio card">
+        <h2>David Bogdanov</h2>
+        <p>I make fast, clean, conversion‑focused sites and experiences. If you tapped my NFC card — welcome! Scroll to preview recent work.</p>
+        <div class="chips">
+          <span class="chip">📞 564‑888‑3736</span>
+          <span class="chip">✉ david@dbdigitalco.com</span>
+          <span class="chip">✉ me@davidbogdanov.com</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="tiles card" aria-label="Portfolio">
+      <div class="grid" id="tiles">
+        <!-- MOBILE‑OPTIMIZED 6 TILES: replace data-src with your MP4/GIF URLs; poster is optional still image -->
+        <a class="tile" href="#" data-title="Landing Page">
+          <div class="ar">
+            <video playsinline muted loop preload="none" poster="" data-src=""></video>
+            <video width="1200" height="675" autoplay muted loop playsinline>
+  <source src="tnc.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+            <span class="label">Landing Page</span>
+          </div>
+        </a>
+        <a class="tile" href="#" data-title="E‑Commerce">
+          <div class="ar">
+            <video playsinline muted loop preload="none" poster="" data-src=""></video>
+            <video width="1200" height="675" autoplay muted loop playsinline>
+  <source src="dbdigital.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+            <span class="label">E‑Commerce</span>
+          </div>
+        </a>
+        <a class="tile" href="#" data-title="Responsive">
+          <div class="ar">
+            <video playsinline muted loop preload="none" poster="" data-src=""></video>
+            <video width="1200" height="675" autoplay muted loop playsinline>
+  <source src="rivercrest.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+            <span class="label">Responsive</span>
+          </div>
+        </a>
+        <a class="tile" href="#" data-title="Dashboard">
+          <div class="ar">
+            <video playsinline muted loop preload="none" poster="" data-src=""></video>
+            <video width="1200" height="675" autoplay muted loop playsinline>
+  <source src="pipesmith.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+            <span class="label">Dashboard</span>
+          </div>
+        </a>
+        <a class="tile" href="#" data-title="Brand Site">
+          <div class="ar">
+            <video playsinline muted loop preload="none" poster="" data-src=""></video>
+            <video width="1200" height="675" autoplay muted loop playsinline>
+  <source src="primos.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+            <span class="label">Brand Site</span>
+          </div>
+        </a>
+        <a class="tile" href="#" data-title="Microsite">
+          <div class="ar">
+            <video playsinline muted loop preload="none" poster="" data-src=""></video>
+            <video width="1200" height="675" autoplay muted loop playsinline>
+  <source src="atoz.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+            <span class="label">Microsite</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <footer>© <span id="y"></span> DB Digital • Built for NFC quick‑view</footer>
+  </div>
+
+  <!-- Sticky quick action dock for thumb reachability -->
+  <nav class="dock" aria-label="Quick actions">
+    <a class="dock-btn" href="tel:+15648883736">Call</a>
+    <button class="dock-btn" id="saveVcf">Save</button>
+    <a class="dock-btn" href="mailto:david@dbdigitalco.com">Email</a>
+  </nav>
+
+  <script>
+    // vCard (client‑side)
+    const saveBtn = document.getElementById('saveVcf');
+    saveBtn?.addEventListener('click', ()=>{
+      const vcf = `BEGIN:VCARD
+VERSION:3.0
+N:Bogdanov;David;;;
+FN:David Bogdanov
+ORG:DB Digital
+TITLE:Founder
+TEL;TYPE=CELL:+1-564-888-3736
+EMAIL;TYPE=INTERNET:david@dbdigitalco.com
+EMAIL;TYPE=INTERNET:me@davidbogdanov.com
+URL:https://dbdigitalco.com
+ADR;TYPE=WORK:;;Vancouver;WA;USA;
+END:VCARD`;
+      const blob = new Blob([vcf], {type:'text/vcard'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'David-Bogdanov-DB-Digital.vcf'; a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    // YEAR
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // LAZY‑LOAD & PLAY tiles on user intent (tap/hover) — data‑src keeps first load tiny
+    const tiles = document.querySelectorAll('.tile');
+    const enableVideo = (tile)=>{
+      const v = tile.querySelector('video');
+      const ph = tile.querySelector('img');
+      if(!v || v.dataset.enabled) return;
+      const src = v.dataset.src; if(!src) return;
+      v.src = src; v.dataset.enabled = '1';
+      v.addEventListener('loadeddata', ()=>{ ph.style.opacity = 0; v.play().catch(()=>{}); });
+    };
+    tiles.forEach(tile=>{
+      // tap/click to activate for data‑conscious users
+      tile.addEventListener('click', (e)=>{ enableVideo(tile); });
+      // hover for desktop
+      tile.addEventListener('mouseenter', ()=>{ enableVideo(tile); });
+    });
+
+    // Auto‑enable when scrolled into view (but only if user hasn't requested reduced‑data)
+    const prefersReduceData = window.matchMedia('(prefers-reduced-data: reduce)').matches;
+    if(!prefersReduceData){
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(({isIntersecting, target})=>{ if(isIntersecting) enableVideo(target); });
+      },{threshold:.6});
+      tiles.forEach(t=> io.observe(t));
+    }
+  </script>
+</body>
+</html>
