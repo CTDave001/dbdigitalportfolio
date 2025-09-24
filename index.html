@@ -1,258 +1,341 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" data-colors="#ff7a00,#ff2a6d,#7a5cff,#00e5ff" data-edge="circles">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>DB Digital — David Bogdanov | NFC Profile</title>
-  <meta name="description" content="DB Digital — custom web design & digital marketing. Tap to call, email, or preview recent work." />
-  <meta name="theme-color" content="#0B121A" />
-  <meta property="og:title" content="DB Digital — David Bogdanov" />
-  <meta property="og:description" content="Custom Web Design & Digital Marketing • Vancouver, WA" />
-  <meta property="og:type" content="website" />
-  <style>
-    /* MOBILE‑FIRST, ULTRA‑LIGHT, FAST */
-    :root{
-      --bg:#0B121A;           /* deep navy/black */
-      --card:#0F1726;         /* card surface */
-      --muted:#8AA0B6;        /* muted text */
-      --ink:#EAF2FF;          /* light ink */
-      --accent:#4DD0E1;       /* cyan accent */
-      --accent-2:#FF4DA6;     /* pink accent */
-      --radius:18px;
-      --shadow:0 10px 30px rgba(2,6,23,.5);
-      --ring:0 0 0 3px rgba(77,208,225,.28);
-      --safe: env(safe-area-inset-bottom);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{margin:0;font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; color:var(--ink);
-      background: radial-gradient(900px 500px at 15% -10%, rgba(77,208,225,.09), transparent 60%),
-                  radial-gradient(800px 480px at 100% 10%, rgba(255,77,166,.08), transparent 65%),
-                  linear-gradient(180deg,#0B121A 0%, #0A0F19 100%);
-      -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
-    }
-    a{color:var(--accent);text-decoration:none}
-    a:focus-visible{outline:var(--ring)}
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>dbdigital — Contact Card</title>
 
-    .wrap{max-width:980px;margin:0 auto;padding:16px}
+<!-- Favicons -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 
-    /* HEADER — simplified, centered for mobile */
-    header{display:grid;gap:10px;justify-items:center;padding:14px;border-radius:var(--radius);
-      background:rgba(255,255,255,.02);box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.06);backdrop-filter:blur(6px)}
-    .logo{height:52px;width:auto;filter:drop-shadow(0 6px 16px rgba(77,208,225,.25))}
-    h1{margin:2px 0 0;font-size:22px;letter-spacing:.3px}
-    .tag{font-size:13px;color:var(--muted);}
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap" rel="stylesheet">
 
-    /* ACTIONS — big tap targets */
-    .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;margin-top:6px}
-    .btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px 14px;border-radius:14px;border:1px solid rgba(255,255,255,.12);
-      background:linear-gradient(180deg, rgba(77,208,225,.18), rgba(77,208,225,.10));color:#EAFBFF;font-weight:700}
-    .btn.secondary{background:linear-gradient(180deg, rgba(255,77,166,.18), rgba(255,77,166,.10));border-color:rgba(255,77,166,.32)}
+<style>
+  :root{
+    --brand-1:#ff7a00; --brand-2:#ff2a6d; --brand-3:#7a5cff; --brand-4:#00e5ff;
+    --brand-gradient: linear-gradient(135deg,var(--brand-1),var(--brand-2),var(--brand-3),var(--brand-4));
+    --brand-ring: 0 0 0 2px color-mix(in oklab, var(--brand-3) 55%, transparent);
+    --bg-900:#0e0f12; --bg-800:#151926; --ink:#e8edf6; --muted:#93a0b5; --line:color-mix(in oklab, white 10%, transparent);
+    --radius:30px;
+    --shadow-lg:0 28px 72px rgba(0,0,0,.55);
+    --glow-soft:0 0 56px color-mix(in oklab, var(--brand-2) 32%, transparent);
+    --glow-strong:0 0 96px color-mix(in oklab, var(--brand-3) 38%, transparent);
+  }
 
-    /* HERO */
-    .hero{display:grid;gap:12px;margin-top:14px}
-    .card{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);box-shadow:var(--shadow)}
-    .bio{padding:18px}
-    .bio h2{margin:0 0 6px;font-size:20px}
-    .bio p{margin:0;color:#DCE7F5;line-height:1.6}
-    .chips{margin-top:10px;display:flex;flex-wrap:wrap;gap:8px}
-    .chip{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);font-size:13px}
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: ui-sans-serif, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    color:var(--ink);
+    background:
+      radial-gradient(1200px 600px at 15% -10%, color-mix(in oklab, var(--brand-4) 8%, transparent), transparent 60%),
+      radial-gradient(1000px 500px at 85% 110%, color-mix(in oklab, var(--brand-1) 8%, transparent), transparent 60%),
+      var(--bg-900);
+    display:grid;
+    justify-items:center;
+    align-items:start;          /* allow natural scroll when tall */
+    padding:18px;
+    overflow:auto;              /* ensure scrolling */
+  }
 
-    /* TILES — responsive, lazy and touch‑friendly */
-    .tiles{padding:12px}
-    .grid{display:grid;gap:10px;grid-template-columns:1fr}
-    .tile{position:relative;overflow:hidden;border-radius:16px;background:#0b1222;border:1px solid rgba(255,255,255,.08)}
-    .ar{width:100%;aspect-ratio:16/9;position:relative}
-    .tile video,.tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-    .label{position:absolute;left:10px;bottom:10px;font-weight:700;font-size:14px;padding:8px 10px;border-radius:12px;background:rgba(11,18,26,.7);border:1px solid rgba(255,255,255,.15);backdrop-filter:blur(4px)}
-    .tile:active{outline:3px solid rgba(77,208,225,.28)}
+  .card{
+    width:min(460px, 92vw);
+    background: linear-gradient(180deg, color-mix(in oklab, white 2%, var(--bg-800)) 0%, var(--bg-800) 70%);
+    border-radius:var(--radius);
+    box-shadow: var(--shadow-lg), var(--glow-soft);
+    border:1px solid var(--line);
+    overflow:hidden; position:relative; isolation:isolate;
+    -webkit-clip-path: inset(0 round var(--radius));
+            clip-path: inset(0 round var(--radius));
+    margin:28px 0;              /* extra breathing room so it feels longer */
+  }
 
-    /* STICKY QUICK BAR */
-    .dock{position:fixed;left:0;right:0;bottom:0;transform:translateY(calc(var(--safe) * -1));padding:8px 12px calc(10px + var(--safe));
-      display:grid;grid-template-columns:repeat(3,1fr);gap:10px;background:linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.6) 35%);}
-    .dock .dock-btn{padding:12px 10px;border-radius:14px;text-align:center;font-weight:800;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff}
+  /* --- Brand header (shorter, corners visible) --- */
+  .brand-header{
+    position:relative; height:110px; /* even shorter per your request */
+    background: linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.15)), var(--brand-gradient);
+    border-bottom:1px solid var(--line);
+    border-top-left-radius: inherit; border-top-right-radius: inherit;
+    overflow:hidden;
+  }
+  .brand-header video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.26; filter:saturate(1.03) contrast(1.04); }
+  .brand-header::after{ content:""; position:absolute; inset:0; pointer-events:none; box-shadow: inset 0 0 110px color-mix(in oklab, var(--brand-3) 22%, transparent); }
 
-    footer{opacity:.7;text-align:center;font-size:12px;padding:22px 8px 80px}
+  /* Circles start 20px from top (clean band at very top) */
+  .edge-blend{ position:absolute; left:0; right:0; top:20px; bottom:-1px; pointer-events:none; }
+  html[data-edge="circles"] .edge-blend{
+    background:
+      linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,.25) 30%, rgba(0,0,0,.6) 70%, rgba(0,0,0,.9) 100%),
+      repeating-radial-gradient(circle at 50% 0%, rgba(255,255,255,.25) 0 2px, rgba(255,255,255,0) 3px 16px);
+    mix-blend-mode: overlay; opacity:.24;
+    mask-image: linear-gradient(to bottom, black 0%, black 60%, transparent 100%);
+  }
+  html[data-edge="hex"] .edge-blend{
+    --sz:18px;
+    background:
+      linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,.25) 30%, rgba(0,0,0,.6) 70%, rgba(0,0,0,.9) 100%),
+      conic-gradient(from 60deg at 50% 0, rgba(255,255,255,.22) 0 60deg, transparent 60deg 120deg, rgba(255,255,255,.22) 120deg 180deg) left/var(--sz) calc(var(--sz)*.577) repeat;
+    mix-blend-mode: overlay; opacity:.22;
+    mask-image: linear-gradient(to bottom, black 0%, black 60%, transparent 100%);
+  }
 
-    /* enhancements on wider screens */
-    @media (min-width:560px){
-      .actions{grid-template-columns:repeat(3,1fr)}
-      .grid{grid-template-columns:1fr 1fr}
-    }
-    @media (min-width:900px){
-      header{grid-template-columns:auto 1fr;justify-items:start}
-      .grid{grid-template-columns:repeat(3,1fr)}
-      .wrap{padding:24px}
-    }
+  /* Top row — use your SVG logo on the right, slightly bigger */
+  .logo-wrap{
+    position:absolute; inset:0;
+    display:flex; align-items:flex-start; justify-content:flex-end;
+    padding:40px 16px 0;
+    gap:12px;
+  }
+  .top-logo{
+    height:54px;                /* bumped from 44px → 54px */
+    aspect-ratio:auto;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,.35));
+    display:block;
+  }
 
-    /* accessibility & motion */
-    @media (prefers-reduced-motion:reduce){
-      *{scroll-behavior:auto}
-      .tile video{animation:none;transition:none}
-    }
-    @media (prefers-reduced-data:reduce){
-      .tile video{display:none}
-    }
-  </style>
+  /* --- Profile row --- */
+  .profile{ display:flex; gap:14px; align-items:center; padding:14px 16px; margin-top:-28px; position:relative; z-index:1; }
+  .avatar{
+    width:100px; height:100px; border-radius:24px; overflow:hidden; flex:none;
+    border:2px solid color-mix(in oklab, var(--brand-4) 55%, transparent);
+    box-shadow:0 8px 20px rgba(0,0,0,.45), var(--glow-soft);
+    background:linear-gradient(135deg, #1f2330, #10131a); position:relative;
+  }
+  .avatar::after{ display:none !important; }
+  .avatar img{ width:100%; height:100%; object-fit:cover; display:block }
+  .who{ display:grid; gap:4px; min-width:0; }
+  .who h2{ margin:0; font-size:22px; line-height:1.1; letter-spacing:.01em; color:var(--ink); font-family:'Poppins', system-ui, -apple-system, Segoe UI, Inter, Roboto, Helvetica, Arial, sans-serif; }
+  .who .role{ color:var(--muted); font-size:13px }
+
+  /* --- Contact tiles (restored original sizing + icons) --- */
+  .contact{ display:grid; gap:12px; padding:4px 20px 6px; }
+  .contact a, .contact .item{
+    display:flex; gap:12px; align-items:center; text-decoration:none; color:var(--ink);
+    padding:16px 16px; border-radius:20px; border:1px solid var(--line);
+    background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.005));
+    box-shadow: inset 0 -6px 18px rgba(255,255,255,.02);
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
+    backdrop-filter:saturate(1.2) blur(2px);
+  }
+  .contact a:hover, .contact .item:hover{
+    transform: translateY(-2px);
+    border-color: color-mix(in oklab, var(--brand-2) 45%, white 0%);
+    box-shadow: var(--glow-soft);
+    background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
+  }
+  .icn{ width:34px; height:34px; display:grid; place-items:center; flex:none; border-radius:12px; background: color-mix(in oklab, var(--brand-3) 16%, transparent); box-shadow: inset var(--brand-ring); }
+  .icn svg{ width:18px; height:18px; stroke: currentColor; fill: none; stroke-width:2; opacity:.9 }
+  .txt{ display:grid; gap:2px; min-width:0 }
+  .label{ font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted) }
+  .value{ font-size:15px; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+
+  /* --- CTA + Note --- */
+  .cta{ display:grid; gap:12px; padding:8px 20px 20px; }
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:10px;
+    padding:14px 16px; border-radius:18px; font-weight:700; letter-spacing:.04em; font-size:14px;
+    border:1px solid transparent; cursor:pointer; user-select:none;
+    background:var(--brand-gradient); color:#0e0f12; box-shadow: var(--glow-strong);
+    transition: transform .15s ease, filter .2s ease, box-shadow .2s ease;
+  }
+  .btn.secondary{ background:transparent; color:var(--ink); border-color: color-mix(in oklab, var(--brand-3) 50%, transparent); box-shadow:none }
+  .btn:hover{ transform: translateY(-2px); filter:saturate(1.05) }
+
+  /* --- Footer --- */
+  a.foot{ text-decoration:none; border-top:1px solid var(--line); padding:16px 20px 22px; display:flex; gap:10px; align-items:center; justify-content:center; color:var(--muted); font-size:13px; flex-wrap:wrap; transition: background .2s ease, transform .15s ease }
+  a.foot:hover{ background:rgba(255,255,255,.03); transform: translateY(-1px) }
+  .foot b{ background:var(--brand-gradient); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .pulsr-logo{ height:18px; vertical-align:middle; filter: drop-shadow(0 1px 3px rgba(0,0,0,.25)); }
+
+  /* Modal */
+  .modal-overlay{ position:fixed; inset:0; background:rgba(0,0,0,.7); display:none; justify-content:center; align-items:center; z-index:50 }
+  .note-modal{ background: var(--bg-800); width:min(440px,94vw); border-radius:18px; padding:20px; border:1px solid var(--line); box-shadow:0 10px 25px rgba(0,0,0,.3) }
+  .modal-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:12px }
+  .modal-title{ color:var(--ink); font-weight:700 }
+  .close-modal{ background:none; border:none; color:var(--muted); font-size:22px; cursor:pointer }
+  .note-textarea{ width:100%; height:140px; padding:12px; background: rgba(255,255,255,.04); border:1px solid var(--line); border-radius:12px; color:var(--ink); font: inherit; resize:vertical }
+  .modal-actions{ display:flex; gap:8px; justify-content:flex-end; margin-top:10px }
+
+  @media (max-width:420px){
+    .brand-header{height:102px}
+    .avatar{width:92px; height:92px; border-radius:22px}
+  }
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <header class="card">
-      <img class="logo" alt="DB Digital Logo" src="https://cdn.prod.website-files.com/67cb547c157b611e86c7da82/67cb55786b12aefcbc44515d_dbdigitalmarketinglogo.svg"/>
-      <h1>DB Digital</h1>
-      <div class="tag">Custom Web Design & Digital Marketing • Vancouver, WA</div>
-      <div class="actions">
-        <a class="btn" href="tel:+15648883736">Call</a>
-        <a class="btn secondary" href="mailto:david@dbdigitalco.com">Email</a>
-        <a class="btn" href="mailto:me@davidbogdanov.com">Alt Email</a>
+  <main class="card">
+    <header class="brand-header">
+      <video id="heroVideo" autoplay muted loop playsinline></video>
+      <div class="logo-wrap">
+        <img class="top-logo" src="dbdigitalmarketinglogo.svg" alt="dbdigital logo" />
       </div>
+      <div class="edge-blend" aria-hidden="true"></div>
     </header>
 
-    <section class="hero">
-      <div class="bio card">
+    <section class="profile">
+      <div class="avatar">
+        <img src="dbdigital-profile.jpg" alt="Profile" />
+      </div>
+      <div class="who">
         <h2>David Bogdanov</h2>
-        <p>I make fast, clean, conversion‑focused sites and experiences. If you tapped my NFC card — welcome! Scroll to preview recent work.</p>
-        <div class="chips">
-          <span class="chip">📞 564‑888‑3736</span>
-          <span class="chip">✉ david@dbdigitalco.com</span>
-          <span class="chip">✉ me@davidbogdanov.com</span>
-        </div>
+        <div class="role">Founder • dbdigital</div>
       </div>
     </section>
 
-    <section class="tiles card" aria-label="Portfolio">
-      <div class="grid" id="tiles">
-        <!-- MOBILE‑OPTIMIZED 6 TILES: replace data-src with your MP4/GIF URLs; poster is optional still image -->
-        <a class="tile" href="#" data-title="Landing Page">
-          <div class="ar">
-            <video playsinline muted loop preload="none" poster="" data-src=""></video>
-            <video width="1200" height="675" autoplay muted loop playsinline>
-  <source src="tnc.mp4" type="video/mp4" />
-  Your browser does not support the video tag.
-</video>
+    <nav class="contact">
+      <a href="tel:+15648883736" class="item">
+        <span class="icn" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v2a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.08 4.18 2 2 0 0 1 4.06 2h2a2 2 0 0 1 2 1.72c.12.9.33 1.77.62 2.6a2 2 0 0 1-.45 2.11L7.09 9.91a16 16 0 0 0 6 6l1.48-1.14a2 2 0 0 1 2.11-.45c.83.29 1.7.5 2.6.62A2 2 0 0 1 22 16.92z"/></svg>
+        </span>
+        <span class="txt"><span class="label">Call</span><span class="value">+1 (564) 888-3736</span></span>
+      </a>
 
-            <span class="label">Landing Page</span>
-          </div>
-        </a>
-        <a class="tile" href="#" data-title="E‑Commerce">
-          <div class="ar">
-            <video playsinline muted loop preload="none" poster="" data-src=""></video>
-            <video width="1200" height="675" autoplay muted loop playsinline>
-  <source src="dbdigital.mp4" type="video/mp4" />
-  Your browser does not support the video tag.
-</video>
+      <a href="mailto:david@dbdigitalco.com" class="item">
+        <span class="icn" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 6h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2zm0 0l8 6 8-6"/></svg>
+        </span>
+        <span class="txt"><span class="label">Email</span><span class="value">david@dbdigitalco.com</span></span>
+      </a>
 
-            <span class="label">E‑Commerce</span>
-          </div>
-        </a>
-        <a class="tile" href="#" data-title="Responsive">
-          <div class="ar">
-            <video playsinline muted loop preload="none" poster="" data-src=""></video>
-            <video width="1200" height="675" autoplay muted loop playsinline>
-  <source src="rivercrest.mp4" type="video/mp4" />
-  Your browser does not support the video tag.
-</video>
+      <a href="mailto:me@davidbogdanov.com" class="item">
+        <span class="icn" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 6h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2zm0 0l8 6 8-6"/></svg>
+        </span>
+        <span class="txt"><span class="label">Alt Email</span><span class="value">me@davidbogdanov.com</span></span>
+      </a>
 
-            <span class="label">Responsive</span>
-          </div>
-        </a>
-        <a class="tile" href="#" data-title="Dashboard">
-          <div class="ar">
-            <video playsinline muted loop preload="none" poster="" data-src=""></video>
-            <video width="1200" height="675" autoplay muted loop playsinline>
-  <source src="pipesmith.mp4" type="video/mp4" />
-  Your browser does not support the video tag.
-</video>
+      <a href="https://dbdigitalco.com" target="_blank" rel="noopener" class="item">
+        <span class="icn" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20M12 2a15.3 15.3 0 0 0 0 20"/></svg>
+        </span>
+        <span class="txt"><span class="label">Website</span><span class="value">dbdigitalco.com</span></span>
+      </a>
 
-            <span class="label">Dashboard</span>
-          </div>
-        </a>
-        <a class="tile" href="#" data-title="Brand Site">
-          <div class="ar">
-            <video playsinline muted loop preload="none" poster="" data-src=""></video>
-            <video width="1200" height="675" autoplay muted loop playsinline>
-  <source src="primos.mp4" type="video/mp4" />
-  Your browser does not support the video tag.
-</video>
-
-            <span class="label">Brand Site</span>
-          </div>
-        </a>
-        <a class="tile" href="#" data-title="Microsite">
-          <div class="ar">
-            <video playsinline muted loop preload="none" poster="" data-src=""></video>
-            <video width="1200" height="675" autoplay muted loop playsinline>
-  <source src="atoz.mp4" type="video/mp4" />
-  Your browser does not support the video tag.
-</video>
-
-            <span class="label">Microsite</span>
-          </div>
-        </a>
+      <div class="item" tabindex="0">
+        <span class="icn" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M21 10c0 6-9 12-9 12S3 16 3 10a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </span>
+        <span class="txt"><span class="label">HQ</span><span class="value">Vancouver, WA • USA</span></span>
       </div>
-    </section>
+    </nav>
 
-    <footer>© <span id="y"></span> DB Digital • Built for NFC quick‑view</footer>
+    <div class="cta">
+      <button class="btn" id="saveVcard">Save to Contacts</button>
+      <button class="btn secondary" id="openNote">Add Note</button>
+    </div>
+
+    <a class="foot" href="https://getpulsr.com" target="_blank" rel="noopener" aria-label="Open getpulsr.com">
+      <img class="pulsr-logo" src="pulsr-logo.svg" alt="Pulsr" onerror="this.hidden=true" />
+      <span>Made by</span><b>Pulsr</b><span> • getpulsr.com</span>
+    </a>
+  </main>
+
+  <!-- Add Note Modal -->
+  <div class="modal-overlay" id="noteModal" role="dialog" aria-modal="true" aria-labelledby="noteTitle">
+    <div class="note-modal">
+      <div class="modal-header">
+        <h3 class="modal-title" id="noteTitle">Add Note</h3>
+        <button class="close-modal" id="closeNote" aria-label="Close">&times;</button>
+      </div>
+      <textarea class="note-textarea" placeholder="Type your note here…"></textarea>
+      <div class="modal-actions">
+        <button class="btn secondary" id="cancelNote">Cancel</button>
+        <button class="btn" id="saveNote">Save Note</button>
+      </div>
+    </div>
   </div>
 
-  <!-- Sticky quick action dock for thumb reachability -->
-  <nav class="dock" aria-label="Quick actions">
-    <a class="dock-btn" href="tel:+15648883736">Call</a>
-    <button class="dock-btn" id="saveVcf">Save</button>
-    <a class="dock-btn" href="mailto:david@dbdigitalco.com">Email</a>
-  </nav>
+<script>
+  /* Theme helper */
+  (function(){
+    const data = document.documentElement.getAttribute('data-colors');
+    if(!data) return; const cols = data.split(',').map(s=>s.trim());
+    const rs = document.documentElement;
+    cols[0] && rs.style.setProperty('--brand-1', cols[0]);
+    cols[1] && rs.style.setProperty('--brand-2', cols[1]);
+    cols[2] && rs.style.setProperty('--brand-3', cols[2]);
+    cols[3] && rs.style.setProperty('--brand-4', cols[3]);
+  })();
 
-  <script>
-    // vCard (client‑side)
-    const saveBtn = document.getElementById('saveVcf');
-    saveBtn?.addEventListener('click', ()=>{
-      const vcf = `BEGIN:VCARD
-VERSION:3.0
-N:Bogdanov;David;;;
-FN:David Bogdanov
-ORG:DB Digital
-TITLE:Founder
-TEL;TYPE=CELL:+1-564-888-3736
-EMAIL;TYPE=INTERNET:david@dbdigitalco.com
-EMAIL;TYPE=INTERNET:me@davidbogdanov.com
-URL:https://dbdigitalco.com
-ADR;TYPE=WORK:;;Vancouver;WA;USA;
-END:VCARD`;
-      const blob = new Blob([vcf], {type:'text/vcard'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = 'David-Bogdanov-DB-Digital.vcf'; a.click();
-      URL.revokeObjectURL(url);
-    });
-
-    // YEAR
-    document.getElementById('y').textContent = new Date().getFullYear();
-
-    // LAZY‑LOAD & PLAY tiles on user intent (tap/hover) — data‑src keeps first load tiny
-    const tiles = document.querySelectorAll('.tile');
-    const enableVideo = (tile)=>{
-      const v = tile.querySelector('video');
-      const ph = tile.querySelector('img');
-      if(!v || v.dataset.enabled) return;
-      const src = v.dataset.src; if(!src) return;
-      v.src = src; v.dataset.enabled = '1';
-      v.addEventListener('loadeddata', ()=>{ ph.style.opacity = 0; v.play().catch(()=>{}); });
-    };
-    tiles.forEach(tile=>{
-      // tap/click to activate for data‑conscious users
-      tile.addEventListener('click', (e)=>{ enableVideo(tile); });
-      // hover for desktop
-      tile.addEventListener('mouseenter', ()=>{ enableVideo(tile); });
-    });
-
-    // Auto‑enable when scrolled into view (but only if user hasn't requested reduced‑data)
-    const prefersReduceData = window.matchMedia('(prefers-reduced-data: reduce)').matches;
-    if(!prefersReduceData){
-      const io = new IntersectionObserver((entries)=>{
-        entries.forEach(({isIntersecting, target})=>{ if(isIntersecting) enableVideo(target); });
-      },{threshold:.6});
-      tiles.forEach(t=> io.observe(t));
+  /* Optional rotating header video */
+  (async function(){
+    const vids = [ 'dbdigital.mp4','atoz.mp4','pipesmith.mp4','primos.mp4','rivercrest.mp4','tnc.mp4' ];
+    const video = document.getElementById('heroVideo');
+    const sources = [];
+    for (const v of vids){
+      try{ const res = await fetch(v, {method:'HEAD'}); if(res.ok) sources.push(v);}catch{}
     }
-  </script>
+    if(sources.length){
+      let i = Math.floor(Math.random()*sources.length);
+      const setSrc = (idx)=>{ video.src = sources[idx]; video.play().catch(()=>{}); };
+      setSrc(i);
+      video.addEventListener('ended', ()=>{ i = (i+1)%sources.length; setSrc(i); });
+    } else {
+      video.remove();
+    }
+  })();
+
+  /* Modal */
+  (function(){
+    const modal = document.getElementById('noteModal');
+    const open = document.getElementById('openNote');
+    const closeBtn = document.getElementById('closeNote');
+    const cancel = document.getElementById('cancelNote');
+    const save = document.getElementById('saveNote');
+    const textarea = modal.querySelector('textarea');
+    let userNote = '';
+
+    function show(){ modal.style.display='flex'; textarea.value = userNote; textarea.focus(); }
+    function hide(){ modal.style.display='none'; }
+
+    open.addEventListener('click', show);
+    closeBtn.addEventListener('click', hide);
+    cancel.addEventListener('click', hide);
+    modal.addEventListener('click', (e)=>{ if(e.target===modal) hide(); });
+
+    save.addEventListener('click', ()=>{ userNote = textarea.value; hide(); });
+
+    window.__getUserNote = ()=>userNote;
+  })();
+
+  /* vCard helpers */
+  function escapeNote(text){
+    if(!text) return '';
+    let t = String(text).replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+    t = t.replace(/\\n/g, '\u0000'); t = t.replace(/\n/g, '\\n'); t = t.replace(/\u0000/g, '\\n');
+    return `NOTE:${t}\n`;
+  }
+
+  (function(){
+    const btn = document.getElementById('saveVcard');
+    btn.addEventListener('click', async () => {
+      btn.disabled = true; const original = btn.textContent; btn.textContent = 'Preparing…';
+      try{
+        const imgResp = await fetch('dbdigital-profile.jpg');
+        const blob = await (imgResp.ok ? imgResp.blob() : Promise.resolve(new Blob()));
+        const b64 = await new Promise((res)=>{
+          if(blob.size===0) return res('');
+          const r=new FileReader(); r.onload=()=>res(String(r.result).split(',')[1]||''); r.readAsDataURL(blob);
+        });
+
+        const rawNote = (window.__getUserNote && window.__getUserNote()) ? window.__getUserNote() : '';
+        const noteLine = escapeNote(rawNote);
+
+        const vcf = `BEGIN:VCARD\nVERSION:3.0\nN:Bogdanov;David;;;\nFN:David Bogdanov\n${noteLine}TEL;TYPE=WORK,VOICE:+15648883736\nEMAIL;TYPE=WORK:david@dbdigitalco.com\nEMAIL;TYPE=HOME:me@davidbogdanov.com\nORG:dbdigital\nTITLE:Founder\nADR;TYPE=WORK:;;;Vancouver;WA;;USA\nURL;TYPE=WORK:https://dbdigitalco.com\nPHOTO;ENCODING=b;TYPE=JPEG:${b64}\nEND:VCARD`;
+
+        const url = URL.createObjectURL(new Blob([vcf],{type:'text/vcard;charset=utf-8'}));
+        const a = Object.assign(document.createElement('a'),{href:url,download:'David_Bogdanov_dbdigital.vcf'});
+        document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+        btn.textContent = 'Saved!'; setTimeout(()=>{btn.textContent=original; btn.disabled=false;},1300);
+      }catch(err){
+        console.error(err); btn.textContent = 'Try again';
+        setTimeout(()=>{btn.textContent=original; btn.disabled=false;},1300);
+      }
+    });
+  })();
+</script>
 </body>
 </html>
