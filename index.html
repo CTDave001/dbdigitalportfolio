@@ -285,6 +285,102 @@
   </div>
 
 <script>
+  /* Apply <html data-colors> to CSS vars */
+  (function(){
+    const data = document.documentElement.getAttribute('data-colors');
+    if(!data) return;
+    const cols = data.split(',').map(s=>s.trim());
+    const rs = document.documentElement;
+    cols[0] && rs.style.setProperty('--brand-1', cols[0]);
+    cols[1] && rs.style.setProperty('--brand-2', cols[1]);
+    cols[2] && rs.style.setProperty('--brand-3', cols[2]);
+    cols[3] && rs.style.setProperty('--brand-4', cols[3]);
+  })();
+
+  /* Cross-fade rotating header videos + tap-to-toggle */
+  (function(){
+    const header = document.getElementById('brandHeader');
+    const vA = header.querySelector('.hero.v0');
+    const vB = header.querySelector('.hero.v1');
+    const pool = ['dbdigital.mp4','atoz.mp4','pipesmith.mp4','primos.mp4','rivercrest.mp4','tnc.mp4'];
+
+    let cur = 0;
+    let topIsA = true;   // which element is currently showing
+    let paused = false;
+
+    function activeEl(){ return topIsA ? vA : vB; }
+    function backEl(){ return topIsA ? vB : vA; }
+
+    async function playIndex(i){
+      if (!pool.length) return;
+      const el = backEl();
+      el.src = pool[i];
+      try { await el.play(); } catch { /* Autoplay may need a tap first on iOS */ }
+      // Cross-fade layers
+      el.classList.add('active');
+      activeEl().classList.remove('active');
+      topIsA = !topIsA;
+      activeEl().onended = next;
+    }
+
+    function next(){
+      if (paused || !pool.length) return;
+      cur = (cur + 1) % pool.length;
+      playIndex(cur);
+    }
+
+    function start(){
+      if (!pool.length) return;
+      header.removeAttribute('data-paused');
+      paused = false;
+      cur = Math.floor(Math.random() * pool.length);
+      playIndex(cur);
+    }
+
+    function stop(){
+      paused = true;
+      header.setAttribute('data-paused','true');
+      [vA, vB].forEach(v => { try{ v.pause(); }catch{} });
+    }
+
+    // Start immediately; if autoplay is blocked, first tap will start it
+    start();
+
+    // Tap anywhere on header to toggle
+    header.addEventListener('click', ()=>{ paused ? start() : stop(); });
+  })();
+
+  /* Modal logic — mobile-proofed with scroll lock */
+  (function(){
+    const modal = document.getElementById('noteModal');
+    const open = document.getElementById('openNote');
+    const closeBtn = document.getElementById('closeNote');
+    const cancel = document.getElementById('cancelNote');
+    const save = document.getElementById('saveNote');
+    const textarea = modal.querySelector('textarea');
+    let userNote = '';
+
+    function show(){
+      modal.style.display='flex';
+      document.body.classList.add('modal-open');   // lock background scroll
+      textarea.value = userNote; textarea.focus();
+    }
+    function hide(){
+      modal.style.display='none';
+      document.body.classList.remove('modal-open');
+    }
+
+    open.addEventListener('click', show);
+    closeBtn.addEventListener('click', hide);
+    cancel.addEventListener('click', hide);
+    modal.addEventListener('click', (e)=>{ if(e.target===modal) hide(); });
+
+    save.addEventListener('click', ()=>{ userNote = textarea.value; hide(); });
+
+    // expose getter for vCard note
+    window.__getUserNote = ()=>userNote;
+  })();
+
   /* vCard NOTE escaping */
   function escapeNote(text){
     if(!text) return '';
@@ -301,7 +397,7 @@
            (navigator.userAgent.includes('Mac') && 'ontouchend' in document);
   }
 
-  /* Clean vCard builder (CRLF line endings) */
+  /* Build vCard text (CRLF endings recommended for iOS Contacts) */
   async function buildVCard(){
     // optional embedded PHOTO
     let b64 = '';
@@ -346,16 +442,14 @@ END:VCARD`.replace(/\n/g, '\r\n');
         const vcf = await buildVCard();
 
         if (isIOS()){
-          // Force native Contacts sheet by navigating to a data: vCard (no download attr!)
+          // Use data URL with text/x-vcard to trigger native Add Contact sheet
           const dataUrl = 'data:text/x-vcard;charset=utf-8,' + encodeURIComponent(vcf);
-          // Using location.href is most reliable to trigger the sheet
-          location.href = dataUrl;
-          // restore UI
+          location.href = dataUrl; // most reliable on iOS
           setTimeout(()=>{btn.textContent = original; btn.disabled = false;}, 900);
           return;
         }
 
-        // Try Web Share (Android/desktop modern)
+        // Try Web Share (Android/modern desktop)
         try{
           if (navigator.canShare && window.File) {
             const file = new File([vcf], 'David_Bogdanov_dbdigital.vcf', { type:'text/vcard' });
@@ -390,4 +484,5 @@ END:VCARD`.replace(/\n/g, '\r\n');
 
 </body>
 </html>
+
 
