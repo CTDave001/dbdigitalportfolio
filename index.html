@@ -20,7 +20,7 @@
 
 <style>
   :root{
-    color-scheme: dark; /* tell browsers we're dark-native */
+    color-scheme: dark;
     --brand-1:#ff7a00; --brand-2:#ff2a6d; --brand-3:#7a5cff; --brand-4:#00e5ff;
     --brand-gradient: linear-gradient(135deg,var(--brand-1),var(--brand-2),var(--brand-3),var(--brand-4));
     --brand-ring: 0 0 0 2px color-mix(in oklab, var(--brand-3) 55%, transparent);
@@ -49,7 +49,10 @@
     align-items:start;
     padding:18px;
     overflow:auto;
+    -webkit-tap-highlight-color: transparent;
   }
+  /* Scroll lock when modal open */
+  body.modal-open{ overflow:hidden; touch-action:none; }
 
   .card{
     width:min(460px, 92vw);
@@ -76,6 +79,7 @@
     position:absolute; inset:0; width:100%; height:100%;
     object-fit:cover; opacity:0; transition:opacity .6s ease;
     filter:saturate(1.03) contrast(1.04);
+    pointer-events:none; /* don't steal taps */
   }
   .brand-header .hero.active{ opacity:.26; } /* visible layer */
   .brand-header[data-paused="true"] .hero{ opacity:0 !important; } /* hide when paused */
@@ -111,10 +115,11 @@
     gap:12px; z-index:2;
   }
   .top-logo{
-    height:54px; /* subtle bump */
+    height:54px;
     aspect-ratio:auto;
     filter: drop-shadow(0 2px 6px rgba(0,0,0,.35));
     display:block;
+    pointer-events:none; /* taps go to header toggle */
   }
 
   /* --- Profile row --- */
@@ -161,6 +166,8 @@
     border:1px solid transparent; cursor:pointer; user-select:none;
     background:var(--brand-gradient); color:#0e0f12; box-shadow: var(--glow-strong);
     transition: transform .15s ease, filter .2s ease, box-shadow .2s ease;
+    -webkit-appearance: none; appearance:none;
+    touch-action:manipulation;
   }
   .btn.secondary{ background:transparent; color:var(--ink); border-color: color-mix(in oklab, var(--brand-3) 50%, transparent); box-shadow:none }
   .btn:hover{ transform: translateY(-2px); filter:saturate(1.05) }
@@ -170,6 +177,19 @@
   a.foot:hover{ background:rgba(255,255,255,.03); transform: translateY(-1px) }
   .foot b{ background:var(--brand-gradient); -webkit-background-clip:text; background-clip:text; color:transparent; }
   .pulsr-logo{ height:18px; vertical-align:middle; filter: drop-shadow(0 1px 3px rgba(0,0,0,.25)); }
+
+  /* Modal: bulletproof on mobile */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(0,0,0,.7);
+    display:none; justify-content:center; align-items:center;
+    z-index:9999;  /* very high to avoid any stacking quirks */
+  }
+  .note-modal{ background: var(--bg-800); width:min(440px,94vw); border-radius:18px; padding:20px; border:1px solid var(--line); box-shadow:0 10px 25px rgba(0,0,0,.3) }
+  .modal-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:12px }
+  .modal-title{ color:var(--ink); font-weight:700 }
+  .close-modal{ background:none; border:none; color:var(--muted); font-size:22px; cursor:pointer; -webkit-appearance:none; appearance:none; }
+  .note-textarea{ width:100%; height:140px; padding:12px; background: rgba(255,255,255,.04); border:1px solid var(--line); border-radius:12px; color:var(--ink); font: inherit; resize:vertical }
+  .modal-actions{ display:flex; gap:8px; justify-content:flex-end; margin-top:10px }
 
   @media (max-width:420px){
     .brand-header{height:102px}
@@ -239,8 +259,8 @@
     </nav>
 
     <div class="cta">
-      <button class="btn" id="saveVcard">Save to Contacts</button>
-      <button class="btn secondary" id="openNote">Add Note</button>
+      <button class="btn" id="saveVcard" type="button">Save to Contacts</button>
+      <button class="btn secondary" id="openNote" type="button">Add Note</button>
     </div>
 
     <a class="foot" href="https://getpulsr.com" target="_blank" rel="noopener" aria-label="Open getpulsr.com">
@@ -254,12 +274,12 @@
     <div class="note-modal">
       <div class="modal-header">
         <h3 class="modal-title" id="noteTitle">Add Note</h3>
-        <button class="close-modal" id="closeNote" aria-label="Close">&times;</button>
+        <button class="close-modal" id="closeNote" aria-label="Close" type="button">&times;</button>
       </div>
       <textarea class="note-textarea" placeholder="Type your note here…"></textarea>
       <div class="modal-actions">
-        <button class="btn secondary" id="cancelNote">Cancel</button>
-        <button class="btn" id="saveNote">Save Note</button>
+        <button class="btn secondary" id="cancelNote" type="button">Cancel</button>
+        <button class="btn" id="saveNote" type="button">Save Note</button>
       </div>
     </div>
   </div>
@@ -329,7 +349,7 @@
     header.addEventListener('click', ()=>{ paused ? start() : stop(); });
   })();
 
-  /* Modal logic */
+  /* Modal logic — mobile proofed with scroll lock */
   (function(){
     const modal = document.getElementById('noteModal');
     const open = document.getElementById('openNote');
@@ -339,8 +359,15 @@
     const textarea = modal.querySelector('textarea');
     let userNote = '';
 
-    function show(){ modal.style.display='flex'; textarea.value = userNote; textarea.focus(); }
-    function hide(){ modal.style.display='none'; }
+    function show(){
+      modal.style.display='flex';
+      document.body.classList.add('modal-open');   // lock background scroll
+      textarea.value = userNote; textarea.focus();
+    }
+    function hide(){
+      modal.style.display='none';
+      document.body.classList.remove('modal-open');
+    }
 
     open.addEventListener('click', show);
     closeBtn.addEventListener('click', hide);
@@ -362,33 +389,79 @@
     return `NOTE:${t}\n`;
   }
 
-  /* vCard download with embedded photo */
+  /* iOS detection helper */
+  function isIOS(){
+    return /iP(hone|od|ad)/.test(navigator.platform) ||
+           (navigator.userAgent.includes('Mac') && 'ontouchend' in document);
+  }
+
+  /* vCard download with iOS-safe fallbacks */
   (function(){
     const btn = document.getElementById('saveVcard');
     btn.addEventListener('click', async () => {
       btn.disabled = true; const original = btn.textContent; btn.textContent = 'Preparing…';
       try{
-        const imgResp = await fetch('dbdigital-profile.jpg');
-        const blob = await (imgResp.ok ? imgResp.blob() : Promise.resolve(new Blob()));
+        // Build PHOTO b64 (optional)
+        const imgResp = await fetch('dbdigital-profile.jpg').catch(()=>null);
+        const blob = imgResp && imgResp.ok ? await imgResp.blob() : new Blob();
         const b64 = await new Promise((res)=>{
           if(blob.size===0) return res('');
           const r=new FileReader(); r.onload=()=>res(String(r.result).split(',')[1]||''); r.readAsDataURL(blob);
         });
 
-        const rawNote = (window.__getUserNote && window.__getUserNote()) ? window.__getUserNote() : '';
-        const noteLine = escapeNote(rawNote);
+        const noteLine = escapeNote((window.__getUserNote && window.__getUserNote()) ? window.__getUserNote() : '');
 
-        const vcf = `BEGIN:VCARD\nVERSION:3.0\nN:Bogdanov;David;;;\nFN:David Bogdanov\n${noteLine}TEL;TYPE=WORK,VOICE:+15648883736\nEMAIL;TYPE=WORK:david@dbdigitalco.com\nEMAIL;TYPE=HOME:me@davidbogdanov.com\nORG:dbdigital\nTITLE:Founder\nADR;TYPE=WORK:;;;Vancouver;WA;;USA\nURL;TYPE=WORK:https://dbdigitalco.com\nPHOTO;ENCODING=b;TYPE=JPEG:${b64}\nEND:VCARD`;
+        const vcf = `BEGIN:VCARD
+VERSION:3.0
+N:Bogdanov;David;;;
+FN:David Bogdanov
+${noteLine}TEL;TYPE=WORK,VOICE:+15648883736
+EMAIL;TYPE=WORK:david@dbdigitalco.com
+EMAIL;TYPE=HOME:me@davidbogdanov.com
+ORG:dbdigital
+TITLE:Founder
+ADR;TYPE=WORK:;;;Vancouver;WA;;USA
+URL;TYPE=WORK:https://dbdigitalco.com
+PHOTO;ENCODING=b;TYPE=JPEG:${b64}
+END:VCARD`.replace(/\n/g, '\r\n'); // better for iOS Contacts
 
+        // Try Web Share with file if supported
+        try{
+          if (navigator.canShare && window.File && window.Blob) {
+            const file = new File([vcf], 'David_Bogdanov_dbdigital.vcf', {type:'text/vcard'});
+            if (navigator.canShare({ files:[file] })) {
+              await navigator.share({ files:[file], title:'Contact', text:'Add to Contacts' });
+              btn.textContent = 'Shared!';
+              setTimeout(()=>{btn.textContent=original; btn.disabled=false;},1000);
+              return;
+            }
+          }
+        }catch{}
+
+        // iOS-friendly data URL fallback
+        if (isIOS()){
+          const dataUrl = 'data:text/vcard;charset=utf-8,' + encodeURIComponent(vcf);
+          const win = window.open(dataUrl, '_blank');
+          if (!win) {
+            // fallback to setting location (still user gesture)
+            location.href = dataUrl;
+          }
+          btn.textContent = 'Opening…';
+          setTimeout(()=>{btn.textContent=original; btn.disabled=false;},1200);
+          return;
+        }
+
+        // Standard Blob download for desktop/Android browsers
         const url = URL.createObjectURL(new Blob([vcf],{type:'text/vcard;charset=utf-8'}));
         const a = Object.assign(document.createElement('a'),{href:url,download:'David_Bogdanov_dbdigital.vcf'});
         document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
         btn.textContent = 'Saved!';
-        setTimeout(()=>{btn.textContent=original; btn.disabled=false;},1300);
+        setTimeout(()=>{btn.textContent=original; btn.disabled=false;},1100);
+
       }catch(err){
         console.error(err);
         btn.textContent = 'Try again';
-        setTimeout(()=>{btn.textContent=original; btn.disabled=false;},1300);
+        setTimeout(()=>{btn.textContent=original; btn.disabled=false;},1100);
       }
     });
   })();
