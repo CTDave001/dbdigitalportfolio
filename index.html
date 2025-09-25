@@ -20,17 +20,12 @@
 
 <style>
   :root{
-    /* Allow system to treat this as a dark page */
-    color-scheme: dark;
-
-    /* Brand colors can be overridden via <html data-colors> */
+    color-scheme: dark; /* tell browsers we're dark-native */
     --brand-1:#ff7a00; --brand-2:#ff2a6d; --brand-3:#7a5cff; --brand-4:#00e5ff;
     --brand-gradient: linear-gradient(135deg,var(--brand-1),var(--brand-2),var(--brand-3),var(--brand-4));
     --brand-ring: 0 0 0 2px color-mix(in oklab, var(--brand-3) 55%, transparent);
-
     --bg-900:#0e0f12; --bg-800:#151926;
     --ink:#e8edf6; --muted:#93a0b5; --line:color-mix(in oklab, white 10%, transparent);
-
     --radius:30px;
     --shadow-lg:0 28px 72px rgba(0,0,0,.55);
     --glow-soft:0 0 56px color-mix(in oklab, var(--brand-2) 32%, transparent);
@@ -39,7 +34,7 @@
 
   *{box-sizing:border-box}
   html,body{height:100%}
-  html, body { background-color:#0e0f12 !important; } /* hard dark background */
+  html, body { background-color:#0e0f12 !important; }
 
   body{
     margin:0;
@@ -51,9 +46,9 @@
       var(--bg-900);
     display:grid;
     justify-items:center;
-    align-items:start;     /* natural scroll when tall */
+    align-items:start;
     padding:18px;
-    overflow:auto;         /* ensure page scrolls as needed */
+    overflow:auto;
   }
 
   .card{
@@ -64,7 +59,7 @@
     border:1px solid var(--line);
     overflow:hidden; position:relative; isolation:isolate;
     -webkit-clip-path: inset(0 round var(--radius));
-            clip-path: inset(0 round var(--radius)); /* ensures corners show at normal zoom */
+            clip-path: inset(0 round var(--radius));
     margin:28px 0;
   }
 
@@ -120,15 +115,6 @@
     aspect-ratio:auto;
     filter: drop-shadow(0 2px 6px rgba(0,0,0,.35));
     display:block;
-  }
-
-  /* On/Off badge */
-  .video-badge{
-    position:absolute; right:10px; top:10px; z-index:3;
-    padding:6px 10px; border-radius:12px; font:600 12px/1 system-ui, sans-serif;
-    color:#0e0f12; background:linear-gradient(135deg,var(--brand-3),var(--brand-4));
-    box-shadow:0 6px 14px rgba(0,0,0,.35);
-    user-select:none; pointer-events:none;
   }
 
   /* --- Profile row --- */
@@ -202,7 +188,6 @@
         <img class="top-logo" src="dbdigitalmarketinglogo.svg" alt="dbdigital logo" />
       </div>
 
-      <div class="video-badge" id="videoBadge">Video: On</div>
       <div class="edge-blend" aria-hidden="true"></div>
     </header>
 
@@ -293,11 +278,10 @@
 
   /* Cross-fade rotating header videos + tap-to-toggle */
   (function(){
-    const header   = document.getElementById('brandHeader');
-    const badge    = document.getElementById('videoBadge');
-    const vA       = header.querySelector('.hero.v0');
-    const vB       = header.querySelector('.hero.v1');
-    const pool     = ['dbdigital.mp4','atoz.mp4','pipesmith.mp4','primos.mp4','rivercrest.mp4','tnc.mp4'];
+    const header = document.getElementById('brandHeader');
+    const vA = header.querySelector('.hero.v0');
+    const vB = header.querySelector('.hero.v1');
+    const pool = ['dbdigital.mp4','atoz.mp4','pipesmith.mp4','primos.mp4','rivercrest.mp4','tnc.mp4'];
 
     let cur = 0;
     let topIsA = true;   // which element is currently showing
@@ -328,7 +312,6 @@
       if (!pool.length) return;
       header.removeAttribute('data-paused');
       paused = false;
-      badge.textContent = 'Video: On';
       cur = Math.floor(Math.random() * pool.length);
       playIndex(cur);
     }
@@ -336,7 +319,6 @@
     function stop(){
       paused = true;
       header.setAttribute('data-paused','true');
-      badge.textContent = 'Video: Off';
       [vA, vB].forEach(v => { try{ v.pause(); }catch{} });
     }
 
@@ -344,9 +326,7 @@
     start();
 
     // Tap anywhere on header to toggle
-    header.addEventListener('click', ()=>{
-      paused ? start() : stop();
-    });
+    header.addEventListener('click', ()=>{ paused ? start() : stop(); });
   })();
 
   /* Modal logic */
