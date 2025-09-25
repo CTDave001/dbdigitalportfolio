@@ -285,100 +285,6 @@
   </div>
 
 <script>
-  /* Apply <html data-colors> to CSS vars */
-  (function(){
-    const data = document.documentElement.getAttribute('data-colors');
-    if(!data) return; const cols = data.split(',').map(s=>s.trim());
-    const rs = document.documentElement;
-    cols[0] && rs.style.setProperty('--brand-1', cols[0]);
-    cols[1] && rs.style.setProperty('--brand-2', cols[1]);
-    cols[2] && rs.style.setProperty('--brand-3', cols[2]);
-    cols[3] && rs.style.setProperty('--brand-4', cols[3]);
-  })();
-
-  /* Cross-fade rotating header videos + tap-to-toggle */
-  (function(){
-    const header = document.getElementById('brandHeader');
-    const vA = header.querySelector('.hero.v0');
-    const vB = header.querySelector('.hero.v1');
-    const pool = ['dbdigital.mp4','atoz.mp4','pipesmith.mp4','primos.mp4','rivercrest.mp4','tnc.mp4'];
-
-    let cur = 0;
-    let topIsA = true;   // which element is currently showing
-    let paused = false;
-
-    function activeEl(){ return topIsA ? vA : vB; }
-    function backEl(){ return topIsA ? vB : vA; }
-
-    async function playIndex(i){
-      if (!pool.length) return;
-      const el = backEl();
-      el.src = pool[i];
-      try { await el.play(); } catch { /* Autoplay may need a tap first */ }
-      // Cross-fade
-      el.classList.add('active');
-      activeEl().classList.remove('active');
-      topIsA = !topIsA;
-      activeEl().onended = next;
-    }
-
-    function next(){
-      if (paused || !pool.length) return;
-      cur = (cur + 1) % pool.length;
-      playIndex(cur);
-    }
-
-    function start(){
-      if (!pool.length) return;
-      header.removeAttribute('data-paused');
-      paused = false;
-      cur = Math.floor(Math.random() * pool.length);
-      playIndex(cur);
-    }
-
-    function stop(){
-      paused = true;
-      header.setAttribute('data-paused','true');
-      [vA, vB].forEach(v => { try{ v.pause(); }catch{} });
-    }
-
-    // Start immediately; if autoplay is blocked, first tap will start it
-    start();
-
-    // Tap anywhere on header to toggle
-    header.addEventListener('click', ()=>{ paused ? start() : stop(); });
-  })();
-
-  /* Modal logic — mobile proofed with scroll lock */
-  (function(){
-    const modal = document.getElementById('noteModal');
-    const open = document.getElementById('openNote');
-    const closeBtn = document.getElementById('closeNote');
-    const cancel = document.getElementById('cancelNote');
-    const save = document.getElementById('saveNote');
-    const textarea = modal.querySelector('textarea');
-    let userNote = '';
-
-    function show(){
-      modal.style.display='flex';
-      document.body.classList.add('modal-open');   // lock background scroll
-      textarea.value = userNote; textarea.focus();
-    }
-    function hide(){
-      modal.style.display='none';
-      document.body.classList.remove('modal-open');
-    }
-
-    open.addEventListener('click', show);
-    closeBtn.addEventListener('click', hide);
-    cancel.addEventListener('click', hide);
-    modal.addEventListener('click', (e)=>{ if(e.target===modal) hide(); });
-
-    save.addEventListener('click', ()=>{ userNote = textarea.value; hide(); });
-
-    window.__getUserNote = ()=>userNote;
-  })();
-
   /* vCard NOTE escaping */
   function escapeNote(text){
     if(!text) return '';
@@ -395,23 +301,25 @@
            (navigator.userAgent.includes('Mac') && 'ontouchend' in document);
   }
 
-  /* vCard download with iOS-safe fallbacks */
-  (function(){
-    const btn = document.getElementById('saveVcard');
-    btn.addEventListener('click', async () => {
-      btn.disabled = true; const original = btn.textContent; btn.textContent = 'Preparing…';
-      try{
-        // Build PHOTO b64 (optional)
-        const imgResp = await fetch('dbdigital-profile.jpg').catch(()=>null);
-        const blob = imgResp && imgResp.ok ? await imgResp.blob() : new Blob();
-        const b64 = await new Promise((res)=>{
-          if(blob.size===0) return res('');
-          const r=new FileReader(); r.onload=()=>res(String(r.result).split(',')[1]||''); r.readAsDataURL(blob);
+  /* Clean vCard builder (CRLF line endings) */
+  async function buildVCard(){
+    // optional embedded PHOTO
+    let b64 = '';
+    try{
+      const imgResp = await fetch('dbdigital-profile.jpg');
+      if (imgResp.ok){
+        const blob = await imgResp.blob();
+        b64 = await new Promise((res)=>{
+          const r=new FileReader();
+          r.onload=()=>res(String(r.result).split(',')[1]||'');
+          r.readAsDataURL(blob);
         });
+      }
+    }catch{}
 
-        const noteLine = escapeNote((window.__getUserNote && window.__getUserNote()) ? window.__getUserNote() : '');
+    const noteLine = escapeNote((window.__getUserNote && window.__getUserNote()) ? window.__getUserNote() : '');
 
-        const vcf = `BEGIN:VCARD
+    const v = `BEGIN:VCARD
 VERSION:3.0
 N:Bogdanov;David;;;
 FN:David Bogdanov
@@ -423,48 +331,63 @@ TITLE:Founder
 ADR;TYPE=WORK:;;;Vancouver;WA;;USA
 URL;TYPE=WORK:https://dbdigitalco.com
 PHOTO;ENCODING=b;TYPE=JPEG:${b64}
-END:VCARD`.replace(/\n/g, '\r\n'); // better for iOS Contacts
+END:VCARD`.replace(/\n/g, '\r\n');
 
-        // Try Web Share with file if supported
+    return v;
+  }
+
+  /* Add-to-Contacts click (iOS opens native sheet; others share or download) */
+  (function(){
+    const btn = document.getElementById('saveVcard');
+    btn.addEventListener('click', async () => {
+      btn.disabled = true; const original = btn.textContent; btn.textContent = 'Preparing…';
+
+      try{
+        const vcf = await buildVCard();
+
+        if (isIOS()){
+          // Force native Contacts sheet by navigating to a data: vCard (no download attr!)
+          const dataUrl = 'data:text/x-vcard;charset=utf-8,' + encodeURIComponent(vcf);
+          // Using location.href is most reliable to trigger the sheet
+          location.href = dataUrl;
+          // restore UI
+          setTimeout(()=>{btn.textContent = original; btn.disabled = false;}, 900);
+          return;
+        }
+
+        // Try Web Share (Android/desktop modern)
         try{
-          if (navigator.canShare && window.File && window.Blob) {
-            const file = new File([vcf], 'David_Bogdanov_dbdigital.vcf', {type:'text/vcard'});
+          if (navigator.canShare && window.File) {
+            const file = new File([vcf], 'David_Bogdanov_dbdigital.vcf', { type:'text/vcard' });
             if (navigator.canShare({ files:[file] })) {
               await navigator.share({ files:[file], title:'Contact', text:'Add to Contacts' });
               btn.textContent = 'Shared!';
-              setTimeout(()=>{btn.textContent=original; btn.disabled=false;},1000);
+              setTimeout(()=>{btn.textContent=original; btn.disabled=false;},900);
               return;
             }
           }
         }catch{}
 
-        // iOS-friendly data URL fallback
-        if (isIOS()){
-          const dataUrl = 'data:text/vcard;charset=utf-8,' + encodeURIComponent(vcf);
-          const win = window.open(dataUrl, '_blank');
-          if (!win) {
-            // fallback to setting location (still user gesture)
-            location.href = dataUrl;
-          }
-          btn.textContent = 'Opening…';
-          setTimeout(()=>{btn.textContent=original; btn.disabled=false;},1200);
-          return;
-        }
-
-        // Standard Blob download for desktop/Android browsers
-        const url = URL.createObjectURL(new Blob([vcf],{type:'text/vcard;charset=utf-8'}));
-        const a = Object.assign(document.createElement('a'),{href:url,download:'David_Bogdanov_dbdigital.vcf'});
+        // Fallback: standard download (desktop)
+        const blob = new Blob([vcf], {type:'text/vcard;charset=utf-8'});
+        const url = URL.createObjectURL(blob);
+        const a = Object.assign(document.createElement('a'),{
+          href:url,
+          download:'David_Bogdanov_dbdigital.vcf'
+        });
         document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
         btn.textContent = 'Saved!';
-        setTimeout(()=>{btn.textContent=original; btn.disabled=false;},1100);
+        setTimeout(()=>{btn.textContent=original; btn.disabled=false;},900);
 
-      }catch(err){
-        console.error(err);
+      }catch(e){
+        console.error(e);
         btn.textContent = 'Try again';
-        setTimeout(()=>{btn.textContent=original; btn.disabled=false;},1100);
+        setTimeout(()=>{btn.textContent=original; btn.disabled=false;},900);
       }
     });
   })();
 </script>
+
 </body>
 </html>
+
